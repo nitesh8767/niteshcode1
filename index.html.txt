@@ -1,0 +1,55 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX_VERTICES 100
+
+void initializeMatrix(int matrix[MAX_VERTICES][MAX_VERTICES], int vertices) {
+    for (int i = 0; i < vertices; i++) {
+        for (int j = 0; j < vertices; j++) {
+            matrix[i][j] = 0; // Initialize all values to 0
+        }
+    }
+}
+
+void displayMatrix(int matrix[MAX_VERTICES][MAX_VERTICES], int vertices) {
+    printf("Adjacency Matrix:\n");
+    for (int i = 0; i < vertices; i++) {
+        for (int j = 0; j < vertices; j++) {
+            printf("%d ", matrix[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+int main() {
+    int vertices, edges;
+    int adjacencyMatrix[MAX_VERTICES][MAX_VERTICES];
+
+    // Input number of vertices and edges
+    printf("Enter the number of vertices: ");
+    scanf("%d", &vertices);
+    printf("Enter the number of edges: ");
+    scanf("%d", &edges);
+
+    // Initialize the adjacency matrix
+    initializeMatrix(adjacencyMatrix, vertices);
+
+    // Input edges
+    printf("Enter the edges (u v) where u and v are vertex indices (0 to %d):\n", vertices - 1);
+    for (int i = 0; i < edges; i++) {
+        int u, v;
+        scanf("%d %d", &u, &v);
+        if (u >= 0 && u < vertices && v >= 0 && v < vertices) {
+            adjacencyMatrix[u][v] = 1; // For directed graph
+            adjacencyMatrix[v][u] = 1; // Uncomment this line for undirected graph
+        } else {
+            printf("Invalid edge (%d, %d). Please enter vertices between 0 and %d.\n", u, v, vertices - 1);
+            i--; // Decrement i to repeat this iteration
+        }
+    }
+
+    // Display the adjacency matrix
+    displayMatrix(adjacencyMatrix, vertices);
+
+    return 0;
+}
