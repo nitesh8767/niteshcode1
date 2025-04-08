@@ -1,0 +1,122 @@
+/*a) Write a C program which uses Binary search tree library and displays nodes at each level, count of node at each level and total levels in the tree.
+Solution: 
+*/
+#include<stdio.h>
+#include<stdlib.h>
+#include "bst.h"
+struct Qnode
+{
+	struct TreeNode *node;
+	struct Qnode *next;
+}*front, *rear;
+void initQ()
+{
+	front=rear=NULL;
+}
+int isQEmpty()
+{
+    if(front==rear && rear==NULL)
+	{
+        printf("\nQueue Empty\n");
+        return 1;
+    }
+    return 0;
+}
+void enqueue(struct TreeNode *Tnode)
+{
+    struct Qnode *nptr = (struct Qnode*)malloc(sizeof(struct Qnode));
+    nptr->node = Tnode;
+    nptr->next = NULL;
+    if (rear == NULL)
+    {
+	    front = nptr;
+	    rear = nptr;
+    }
+    else
+    {
+	    rear->next = nptr;
+	    rear = rear->next;
+    }
+}
+struct Qnode * dequeue()
+{
+    struct Qnode *temp;
+    if (front == NULL)
+    {
+        printf("\n\nQueue is empty \n");
+    }
+    else
+    {
+        temp = front;
+        front = front->next;
+        if(temp == rear)
+		{	
+        	rear = front;
+    	}	
+    	temp->next=NULL;
+    }
+    return temp;
+}
+void levelOrderTraversal(struct TreeNode * root) 
+{
+    struct TreeNode *curr,*ptr;
+    int total,cnt,level;
+    struct Qnode *temp;
+    total=cnt=level=0;
+    enqueue(root);
+    ptr=(struct TreeNode*)malloc(sizeof(struct TreeNode));
+    ptr->data=0;
+    ptr->left=ptr->right=NULL;
+    enqueue(ptr);
+    //enqueue(NULL);
+    while(front!=rear)
+    {
+    	temp=dequeue();
+	if(temp->node->data!=0)
+	{
+            total++;
+	    cnt++;
+	    printf("%d\t",temp->node->data);
+	    if(temp->node->left)
+	        enqueue(temp->node->left);
+	    if(temp->node->right)
+		enqueue(temp->node->right);
+	}
+	else
+	{
+	    printf("\nNo of node in level %d = %d\n",level, cnt);
+	    cnt=0;
+	    level++;
+	    ptr=(struct TreeNode*)malloc(sizeof(struct TreeNode));
+    	    ptr->data=0;
+    	    ptr->left=ptr->right=NULL;
+    	    enqueue(ptr);
+        }
+    }
+    printf("\nNo of node in level %d = %d\n",level, cnt);
+    cnt=0;
+    level++;
+    printf("\nTotal Nodes= %d\nNumber of Levels = %d\n",total,level-1);
+}
+int main()
+{
+    int val;
+    struct TreeNode *root;
+    root=NULL;
+    initQ();
+    printf("\n#-#-#-\t\tBST Construction\t-#-#-#\n");
+    while(1)
+    {
+        printf("\nEnter The Tree Node Data:\t");
+        scanf("%d", &val);
+        if(val==0)
+    	    break;
+        else
+        {
+	        root=insert(root, val);
+        }
+    }
+    printf("\n\n\tLevel Order Traversal\n");
+    levelOrderTraversal(root);
+    return 0;
+}

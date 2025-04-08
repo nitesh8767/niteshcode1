@@ -1,0 +1,52 @@
+#include <stdio.h>
+#include<stdlib.h>
+typedef struct bstnode
+{
+	int data;
+	struct bstnode *left,*right;
+}BST;
+BST *create(BST *root,int key)
+{
+	if(root==NULL)
+	{
+		root=(BST*)malloc(sizeof(BST));
+		root->left=root->right=NULL;
+		root->data=key;
+	}
+	else if(key<root->data)
+	{
+		root->left=create(root->left,key);
+	}
+	else
+	{
+		root->right=create(root->right,key);
+	}
+	return(root);
+}
+BST *insert(BST *root,int key)
+{
+	if(root==NULL)
+	{
+		root=(BST*)malloc(sizeof(BST));
+		root->left=root->right=NULL;
+		root->data=key;
+	}
+	else if(key<root->data)
+	{
+		root->left=insert(root->left,key);
+	}
+	else
+	{
+		root->right=insert(root->right,key);
+	}
+	return(root);
+}
+void inorder(BST *root)
+{
+	if(root!=NULL)
+	{
+		inorder(root->left);
+		printf(" %d ",root->data);
+		inorder(root->right);
+	}
+}

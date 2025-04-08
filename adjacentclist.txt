@@ -1,0 +1,78 @@
+//a) Write a C program that accepts the vertices and edges of a graph. Create adjacency list and display the adjacency list.
+//Solution:
+
+#include<stdio.h>
+#include<malloc.h>
+#include<stdlib.h>
+struct node
+{
+    int vertex;
+    struct node *next;
+};
+void display(struct node *AdjList[10], int n)
+{
+    int i;
+    struct node *temp;
+    printf("Vertex\tList\n");
+    for(i=1; i<=n;i++)
+    {
+        temp=AdjList[i];
+        printf("%d\t", i);
+        while(temp!=NULL)
+        {
+            printf("%d->",temp->vertex);
+            temp=temp->next;
+        }
+        printf("NULL\n");
+    }
+}
+void read_graph(int n)
+{
+    int i, j, reply;
+    struct node *AdjList[10];
+    struct node *newnode, *temp;
+    for(i=1;i<=n;i++)
+    {
+        AdjList[i]=NULL;
+    }
+    for(i=1;i<=n;i++)
+    {
+        for(j=1;j<=n;j++)
+        {
+            if(i!=j)
+            {
+            printf("\n Vertices %d and %d are Adjacent?(1||0)\n", i, j);
+            fflush(stdin);
+            scanf("%d", &reply);
+            if(reply==1)
+            {
+                newnode=(struct node*)malloc(sizeof(struct node));
+                newnode->vertex=j;
+                newnode->next=NULL;
+                if(AdjList[i]==NULL)
+                {
+                    AdjList[i]=newnode;
+                }
+                else
+                {
+                    temp=AdjList[i];
+                    while(temp->next!=NULL)
+                    {
+                        temp=temp->next;
+                    }
+                    temp->next=newnode;
+                }
+               
+            }
+           }
+        }
+    }
+    display(AdjList, n);
+}
+void main()
+{
+    int n;
+    printf("\nEnter Number of Vertices\n");
+    scanf("%d", &n);
+    read_graph(n);
+}
